@@ -278,7 +278,7 @@ characterpage:addButton("inf | karma", function()
 end)
 
 
-characterpage:addLabel("customization", "customization / accessories")
+characterpage:addLabel("customization | clothes", "customization / accessories")
 
 
 
@@ -298,8 +298,27 @@ loadstring(game:HttpGet("https://pastebin.com/raw/PQCY6Wd1"))()
 
 end)
 
+characterpage:addLabel("shoes | addons", "buy the available shoes listed ")
 
 
+
+characterpage:addButton("Xmas shoe [200$]",function()
+  
+loadstring(game:HttpGet("https://pastebin.com/raw/nZip8SyM", true))()
+
+end)
+
+characterpage:addButton("GoldXmas shoe [200$]",function()
+
+loadstring(game:HttpGet("https://pastebin.com/raw/Hu4e1mkB", true))()
+
+end)
+
+characterpage:addButton("Redmas shoe [200$]",function()
+  
+loadstring(game:HttpGet("https://pastebin.com/raw/AaaQCUij", true))()
+
+end)
 
 local carpage = UI:addPage("🚗cars (coming soon)", 2, false, 6)
 
