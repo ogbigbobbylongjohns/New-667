@@ -3,7 +3,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries
 
 local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/aaaa"))()
 
-local UI = GUI:CreateWindow(" 🗝️ unvield", "yes it’s true")
+local UI = GUI:CreateWindow(" 🗝️ unvield | best sl2 script | made by cor_s | [V2.1]", "yes it’s true")
 
 local Home = UI:addPage("main", 1, true, 6)
 
@@ -116,41 +116,6 @@ combatPage:addButton("track lines | pvp checker", function()
 end)
 
 -- Stats Page
-local statsPage = UI:addPage("💉stats", 2, false, 6)
-
-statsPage:addLabel("💉stats", "all the features of stats")
-
-statsPage:addToggle("2x | speed", function(value)
-    local player = game.Players.LocalPlayer
-    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-
-    if humanoid then
-        if value == false then
-            speedLoop = false
-            humanoid.WalkSpeed = 16
-        else
-            speedLoop = true
-            task.spawn(function()
-                while speedLoop do
-                    humanoid.WalkSpeed = 24
-                    wait(0.1)
-                end
-            end)
-        end
-    end
-end)
-
-statsPage:addButton("inf | stamina", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
-end)
-
-statsPage:addButton("inf | hunger", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
-end)
-
-statsPage:addButton("inf | karma", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
-end)
 
 -- Animations Page
 local animationPage = UI:addPage("🏃animations", 2, false, 6)
@@ -270,3 +235,73 @@ animationPage:addToggle("snake crawl | OP", function(value)
         end
     end
 end)
+
+
+
+local characterpage = UI:addPage("🧍character", 2, false, 6)
+
+characterpage:addLabel("🧍character", "all the features of character")
+
+
+characterpage:addToggle("2x | speed", function(value)
+    local player = game.Players.LocalPlayer
+    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+
+    if humanoid then
+        if value == false then
+            speedLoop = false
+            humanoid.WalkSpeed = 13
+        else
+            speedLoop = true
+            task.spawn(function()
+                while speedLoop do
+                    humanoid.WalkSpeed = 24
+                    wait(0.1)
+                end
+            end)
+        end
+    end
+end)
+
+
+
+characterpage:addButton("inf | stamina", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
+end)
+
+characterpage:addButton("inf | hunger", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
+end)
+
+characterpage:addButton("inf | karma", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
+end)
+
+
+characterpage:addLabel("customization", "customization / accessories")
+
+
+
+characterpage:addButton("CrossChain",function()
+    
+
+loadstring(game:HttpGet("https://pastebin.com/raw/EuTmKu63"))()
+
+
+end)
+
+
+characterpage:addButton("HunnidChain",function()
+
+
+loadstring(game:HttpGet("https://pastebin.com/raw/PQCY6Wd1"))()
+
+end)
+
+
+
+
+local carpage = UI:addPage("🚗cars (coming soon)", 2, false, 6)
+
+carpage:addLabel("🚗cars", "all the features of cars")
+
