@@ -1,88 +1,134 @@
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua",true))()
-
+-- Load external scripts
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua", true))()
 
 local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/aaaa"))()
 
-local UI = GUI:CreateWindow(" 🗝️ unvield","yes it’s true")
+local UI = GUI:CreateWindow(" 🗝️ unvield", "yes it’s true")
 
-local Home = UI:addPage("main",1,true,6)
+local Home = UI:addPage("main", 1, true, 6)
 
-Home:addLabel("⚙️main","main functions")
+Home:addLabel("⚙️main", "main functions")
 
-Home:addButton("This is a button",function()
- 
-
-
+Home:addButton("remove|camerashake", function()
+    local g_ = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Camera_Bob")
+    if g_ then g_:Destroy() end
 end)
 
-
-
-
-
-
-
--- Just an example of how you would actually use it i guess
-
-local LP = UI:addPage("🎯combat",2,false,6)
-
--- Label
-
-LP:addLabel("🎯combat","all the features of combat")
-
---- Button
-
-LP:addButton("aimbot | mobile support",function()
-
-loadstring(game:HttpGet("https://pastebin.com/raw/m9Q1s7sg"))()
-
+Home:addButton("auto|gifts", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
--- Toggle
+local LP = UI:addPage("💵auto farm", 2, false, 6)
+-- Label for autofarm
+LP:addLabel("💵auto farm", "all the features of autofarm")
 
+LP:addToggle("Auto|SugarFarm", function(value)
+    local isRunning = value  -- Set the isRunning flag based on the toggle value
 
+    spawn(function()
+        while isRunning do
+            local targetCFrame = CFrame.new(185.410812, -401.020081, 664.975891, 0, 0, -1, 0, 1, 0, 1, 0, 0)
 
-LP:addButton("head expander | mobile and pc",function()
+            -- Function to find the part with the exact CFrame
+            local function findTargetPart()
+                for _, part in ipairs(workspace:GetDescendants()) do
+                    if part:IsA("BasePart") and (part.CFrame.Position - targetCFrame.Position).Magnitude < 0.1 then
+                        return part
+                    end
+                end
+                return nil
+            end
 
-   loadstring(game:HttpGet("https://pastebin.com/raw/T03iK6Ay"))()
+            -- Trigger ProximityPrompt if part found
+            task.spawn(function()
+                local targetPart = findTargetPart()
 
+                if targetPart then
+                    for _, child in ipairs(targetPart:GetChildren()) do
+                        if child:IsA("ProximityPrompt") then
+                            fireproximityprompt(child) -- Trigger the ProximityPrompt
+                        end
+                    end
+                end
+            end)
+
+            -- Run the purchase actions
+            task.spawn(function()
+                local args1 = { [1] = "Purchase", [2] = "SugarCane" }
+                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args1))
+                wait(0.1)
+                local args2 = { [1] = "Purchase", [2] = "BakingPowder" }
+                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args2))
+            end)
+
+            -- Unequip and equip actions
+            task.spawn(function()
+                local player = game.Players.LocalPlayer
+                local backpack = player.Backpack
+                local bakingPowder = backpack:WaitForChild("BakingPowder")
+                local sugarCane = backpack:WaitForChild("SugarCane")
+
+                if player.Character:FindFirstChild("BakingPowder") then
+                    player.Character:FindFirstChild("BakingPowder").Parent = backpack
+                end
+                if player.Character:FindFirstChild("SugarCane") then
+                    player.Character:FindFirstChild("SugarCane").Parent = backpack
+                end
+
+                wait(0.1)
+                bakingPowder.Parent = player.Character
+                wait(0.1)
+                sugarCane.Parent = player.Character
+                wait(0.1)
+            end)
+
+            -- Sell action
+            task.spawn(function()
+                local args3 = { [1] = "Sell" }
+                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args3))
+            end)
+
+            -- Wait before repeating
+            task.wait(1.5)
+        end
+    end)
 end)
 
+-- Combat Features Page
+local combatPage = UI:addPage("🎯combat", 2, false, 6)
 
+combatPage:addLabel("🎯combat", "all the features of combat")
 
-LP:addButton("highlight esp | pvp checker", function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/QcEsWdLY", true))()
-
+combatPage:addButton("aimbot | mobile support", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/m9Q1s7sg"))()
 end)
 
-
-
-
-
-LP:addButton("track lines | pvp checker",function()
-
-loadstring(game:HttpGet("https://pastebin.com/raw/CHpQhRcv"))()
-
+combatPage:addButton("head expander | mobile and pc", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/T03iK6Ay"))()
 end)
 
+combatPage:addButton("highlight esp | pvp checker", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/QcEsWdLY", true))()
+end)
 
-local LP = UI:addPage("💉stats",2,false,6)
+combatPage:addButton("track lines | pvp checker", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/CHpQhRcv"))()
+end)
 
-LP:addLabel("💉stats","all the features of stats")
+-- Stats Page
+local statsPage = UI:addPage("💉stats", 2, false, 6)
 
+statsPage:addLabel("💉stats", "all the features of stats")
 
-LP:addToggle("2x speed", function(value)
+statsPage:addToggle("2x speed", function(value)
     local player = game.Players.LocalPlayer
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-    
+
     if humanoid then
         if value == false then
-            -- Stop speed loop and reset speed
             speedLoop = false
             humanoid.WalkSpeed = 16
         else
-            -- Start speed loop with 2x speed
             speedLoop = true
             task.spawn(function()
                 while speedLoop do
@@ -94,110 +140,73 @@ LP:addToggle("2x speed", function(value)
     end
 end)
 
-
-
-LP:addButton("inf stamina",function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
-
+statsPage:addButton("inf stamina", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
 end)
 
-
-LP:addButton("inf hunger",function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
-
+statsPage:addButton("inf hunger", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
 end)
 
-
-LP:addButton("inf karma",function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
-
+statsPage:addButton("inf karma", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
 end)
 
+-- Animations Page
+local animationPage = UI:addPage("🏃animations", 2, false, 6)
 
-
-
-
-
-
-
-local LP = UI:addPage("🏃animations",2,false,6)
-
--- Label
-
-LP:addLabel("🏃animations","all the features of animations")
-
---- Button
-
+animationPage:addLabel("🏃animations", "all the features of animations")
 
 -- Crouch Animation Toggle
-local animationTrack = nil  -- Variable to hold the animation track
-local isRunning = false  -- Track whether the animation is playing
+local crouchAnimationTrack = nil  -- Variable to hold the crouch animation track
+local crouchIsRunning = false  -- Track whether the crouch animation is playing
 
-LP:addToggle("crawl | OP", function(value)
+animationPage:addToggle("crawl | OP", function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:FindFirstChildOfClass("Humanoid")
 
-    -- Ensure there's a humanoid before proceeding
     if not humanoid then return end
 
-    -- Function to search for and play the Crouch animation in workspace
     local function findAndPlayCrouchAnimation()
         for _, obj in ipairs(workspace:GetDescendants()) do
             if obj:IsA("Animation") and obj.Name:lower():find("crouch") then
-                -- Ensure the character has an Animator
                 local animator = humanoid:FindFirstChildOfClass("Animator")
                 if not animator then
                     animator = Instance.new("Animator", humanoid)
                 end
-                
-                -- Load and play the animation
+
                 local track = animator:LoadAnimation(obj)
                 track:Play()
-                print("Playing Crouch animation:", obj.Name)
                 return track
             end
         end
-        print("No Crouch animation found in workspace.")
         return nil
     end
 
     if value then
-        -- When the toggle is on, start playing the animation if it's not running
-        if not isRunning then
-            animationTrack = findAndPlayCrouchAnimation()
-            isRunning = true
-        end
+        crouchAnimationTrack = findAndPlayCrouchAnimation()
     else
-        -- When the toggle is off, stop the animation if it's running
-        if isRunning and animationTrack then
-            animationTrack:Stop()
-            animationTrack:Destroy() -- Ensure it's fully removed
-            animationTrack = nil
-            isRunning = false
-            print("Stopped Crouch animation.")
+        if crouchAnimationTrack then
+            crouchAnimationTrack:Stop()
+            crouchAnimationTrack:Destroy()
+            crouchAnimationTrack = nil
         end
     end
 end)
 
-
 -- HandCuff Animation Toggle
-local animationTrack = nil  -- Variable to hold the animation track
-local isRunning = false  -- Track whether the animation is playing
+local handcuffAnimationTrack = nil  -- Variable to hold the handcuff animation track
+local handcuffIsRunning = false  -- Track whether the handcuff animation is playing
 
-LP:addToggle("crawl | OP", function(value)
+animationPage:addToggle("handcuff | OP", function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:FindFirstChildOfClass("Humanoid")
 
-    -- Ensure there's a humanoid before proceeding
     if not humanoid then return end
 
-    -- Function to play the CuffedAnim animation
-    local function playCuffedAnimation()
+    local function playHandcuffAnimation()
         local anim = game:GetService("ReplicatedStorage"):FindFirstChild("CuffedAnim")
         if anim and anim:IsA("Animation") then
             local animator = humanoid:FindFirstChildOfClass("Animator")
@@ -205,83 +214,59 @@ LP:addToggle("crawl | OP", function(value)
                 animator = Instance.new("Animator", humanoid)
             end
 
-            -- Load and play the animation
-            animationTrack = animator:LoadAnimation(anim)
-            animationTrack:Play()
-            print("Playing Cuffed animation")
-            return animationTrack
+            handcuffAnimationTrack = animator:LoadAnimation(anim)
+            handcuffAnimationTrack:Play()
+            return handcuffAnimationTrack
         else
-            print("CuffedAnim not found in ReplicatedStorage.")
             return nil
         end
     end
 
     if value then
-        -- When the toggle is on, start playing the animation if it's not running
-        if not isRunning then
-            animationTrack = playCuffedAnimation()
-            isRunning = true
-        end
+        handcuffAnimationTrack = playHandcuffAnimation()
     else
-        -- When the toggle is off, stop the animation if it's running
-        if isRunning and animationTrack then
-            animationTrack:Stop()
-            animationTrack:Destroy() -- Ensure it's fully removed
-            animationTrack = nil
-            isRunning = false
-            print("Stopped Cuffed animation.")
+        if handcuffAnimationTrack then
+            handcuffAnimationTrack:Stop()
+            handcuffAnimationTrack:Destroy()
+            handcuffAnimationTrack = nil
         end
     end
 end)
 
-
 -- Snake Crawl Animation Toggle
-local animationTrack = nil  -- Variable to hold the animation track
-local isRunning = false  -- Track whether the animation is playing
+local snakeCrawlAnimationTrack = nil  -- Variable to hold the snake crawl animation track
+local snakeCrawlIsRunning = false  -- Track whether the snake crawl animation is playing
 
-LP:addToggle("crawl | OP)", function(value)
+animationPage:addToggle("snake crawl | OP", function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:FindFirstChildOfClass("Humanoid")
 
-    -- Ensure there's a humanoid before proceeding
     if not humanoid then return end
 
-    -- Function to search for and play the Crawl animation in workspace
-    local function findAndPlayCrawlAnimation()
+    local function findAndPlaySnakeCrawlAnimation()
         for _, obj in ipairs(workspace:GetDescendants()) do
-            if obj:IsA("Animation") and obj.Name:lower():find("crawl") then
-                -- Ensure the character has an Animator
+            if obj:IsA("Animation") and obj.Name:lower():find("snake crawl") then
                 local animator = humanoid:FindFirstChildOfClass("Animator")
                 if not animator then
                     animator = Instance.new("Animator", humanoid)
                 end
-                
-                -- Load and play the animation
+
                 local track = animator:LoadAnimation(obj)
                 track:Play()
-                print("Playing Crawl animation:", obj.Name)
                 return track
             end
         end
-        print("No Crawl animation found in workspace.")
         return nil
     end
 
     if value then
-        -- When the toggle is on, start playing the animation if it's not running
-        if not isRunning then
-            animationTrack = findAndPlayCrawlAnimation()
-            isRunning = true
-        end
+        snakeCrawlAnimationTrack = findAndPlaySnakeCrawlAnimation()
     else
-        -- When the toggle is off, stop the animation if it's running
-        if isRunning and animationTrack then
-            animationTrack:Stop()
-            animationTrack:Destroy() -- Ensure it's fully removed
-            animationTrack = nil
-            isRunning = false
-            print("Stopped Crawl animation.")
+        if snakeCrawlAnimationTrack then
+            snakeCrawlAnimationTrack:Stop()
+            snakeCrawlAnimationTrack:Destroy()
+            snakeCrawlAnimationTrack = nil
         end
     end
 end)
