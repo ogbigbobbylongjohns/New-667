@@ -9,12 +9,12 @@ local Home = UI:addPage("main", 1, true, 6)
 
 Home:addLabel("⚙️main", "main functions")
 
-Home:addButton("remove|camerashake", function()
+Home:addButton("remove | camerashake", function()
     local g_ = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Camera_Bob")
     if g_ then g_:Destroy() end
 end)
 
-Home:addButton("auto|gifts", function()
+Home:addButton("auto | gifts", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
@@ -22,7 +22,7 @@ local LP = UI:addPage("💵auto farm", 2, false, 6)
 -- Label for autofarm
 LP:addLabel("💵auto farm", "all the features of autofarm")
 
-LP:addToggle("Auto|SugarFarm", function(value)
+LP:addToggle("Auto | SugarFarm", function(value)
     local isRunning = value  -- Set the isRunning flag based on the toggle value
 
     spawn(function()
@@ -120,7 +120,7 @@ local statsPage = UI:addPage("💉stats", 2, false, 6)
 
 statsPage:addLabel("💉stats", "all the features of stats")
 
-statsPage:addToggle("2x speed", function(value)
+statsPage:addToggle("2x | speed", function(value)
     local player = game.Players.LocalPlayer
     local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 
@@ -140,15 +140,15 @@ statsPage:addToggle("2x speed", function(value)
     end
 end)
 
-statsPage:addButton("inf stamina", function()
+statsPage:addButton("inf | stamina", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
 end)
 
-statsPage:addButton("inf hunger", function()
+statsPage:addButton("inf | hunger", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
 end)
 
-statsPage:addButton("inf karma", function()
+statsPage:addButton("inf | karma", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
 end)
 
@@ -161,7 +161,7 @@ animationPage:addLabel("🏃animations", "all the features of animations")
 local crouchAnimationTrack = nil  -- Variable to hold the crouch animation track
 local crouchIsRunning = false  -- Track whether the crouch animation is playing
 
-animationPage:addToggle("crawl | OP", function(value)
+animationPage:addToggle("crouch | OP", function(value)
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:FindFirstChildOfClass("Humanoid")
