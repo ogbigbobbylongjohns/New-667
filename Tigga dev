@@ -13,6 +13,9 @@ Home:addLabel("⚙️main", "main functions")
 
 
 
+
+
+
 Home:addButton("remove | camerashake", function()
     local g_ = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Camera_Bob")
     if g_ then g_:Destroy() end
@@ -22,7 +25,7 @@ Home:addButton("auto | gifts", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
-local LP = UI:addPage("💵auto farm", 2, false, 6)
+local LP = UI:addPage("💵auto farm (down)", 2, false, 6)
 -- Label for autofarm
 LP:addLabel("💵auto farm", "all the features of autofarm")
 
