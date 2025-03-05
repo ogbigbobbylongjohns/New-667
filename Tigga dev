@@ -12,6 +12,38 @@ Home:addLabel("⚙️main", "main functions")
 
 
 
+Home:addButton("apartment | bypass",function()
+    
+
+local player = game.Players.LocalPlayer
+
+local function clearInsideApartments()
+    while true do
+        -- Find the player's character in workspace
+        local character = workspace:FindFirstChild(player.Name)
+        
+        if character then
+            -- Find "InsideApartments" inside the character
+            local apartments = character:FindFirstChild("InsideApartments")
+            
+            if apartments then
+                apartments:Destroy() -- Destroy the entire "InsideApartments" folder
+                print("Destroyed 'InsideApartments' for", player.Name)
+            end
+        else
+            warn("Character model not found in workspace")
+        end
+        
+        wait(1) -- Repeat every second
+    end
+end
+
+-- Run the function in a new thread
+task.spawn(clearInsideApartments)
+
+end)
+
+
 
 
 
