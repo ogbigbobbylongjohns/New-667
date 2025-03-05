@@ -1,74 +1,49 @@
--- Load external scripts
+-- Load External Scripts
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua", true))()
-
 local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/aaaa"))()
 
-local UI = GUI:CreateWindow(" 🗝️ unvield | best sl2 script | made by cor_s | [V2.1]", "yes it’s true")
+-- Create Main UI Window
+local UI = GUI:CreateWindow("🗝️ Unveiled | Best SL2 Script | Made by cor_s | [V2.1]", "Yes, it's true!")
 
-local Home = UI:addPage("main", 1, true, 6)
+-- **Main Page**
+local Home = UI:addPage("⚙️ Main", 1, true, 6)
+Home:addLabel("⚙️ Main Functions", "Essential Features")
 
-Home:addLabel("⚙️main", "main functions")
-
-
-
-
-Home:addButton("apartment | bypass",function()
-    
-
-local player = game.Players.LocalPlayer
-
-local function clearInsideApartments()
-    while true do
-        -- Find the player's character in workspace
-        local character = workspace:FindFirstChild(player.Name)
-        
-        if character then
-            -- Find "InsideApartments" inside the character
-            local apartments = character:FindFirstChild("InsideApartments")
-            
-            if apartments then
-                apartments:Destroy() -- Destroy the entire "InsideApartments" folder
-                print("Destroyed 'InsideApartments' for", player.Name)
+Home:addButton("🏠 Apartment Bypass", function()
+    local player = game.Players.LocalPlayer
+    local function clearInsideApartments()
+        while true do
+            local character = workspace:FindFirstChild(player.Name)
+            if character then
+                local apartments = character:FindFirstChild("InsideApartments")
+                if apartments then apartments:Destroy() end
             end
-        else
-            warn("Character model not found in workspace")
+            wait(1)
         end
-        
-        wait(1) -- Repeat every second
     end
-end
-
--- Run the function in a new thread
-task.spawn(clearInsideApartments)
-
+    task.spawn(clearInsideApartments)
 end)
 
-
-
-
-
-
-Home:addButton("remove | camerashake", function()
+Home:addButton("📷 Remove Camera Shake", function()
     local g_ = game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Camera_Bob")
     if g_ then g_:Destroy() end
 end)
 
-Home:addButton("auto | gifts", function()
+Home:addButton("🎁 Auto Gifts", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
-local LP = UI:addPage("💵auto farm (down)", 2, false, 6)
--- Label for autofarm
-LP:addLabel("💵auto farm", "all the features of autofarm")
+-- **Auto Farm Page**
+local LP = UI:addPage("💵 Auto Farm", 2, false, 6)
+LP:addLabel("💵 Auto Farming", "All Farming Features")
 
-LP:addToggle("Auto | SugarFarm", function(value)
-    local isRunning = value  -- Set the isRunning flag based on the toggle value
-
+local sugarFarmRunning = false
+LP:addToggle("🌿 Auto Sugar Farm", function(value)
+    sugarFarmRunning = value
     spawn(function()
-        while isRunning do
-            local targetCFrame = CFrame.new(185.410812, -401.020081, 664.975891, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+        while sugarFarmRunning do
+            local targetCFrame = CFrame.new(185.41, -401.02, 664.97)
 
-            -- Function to find the part with the exact CFrame
             local function findTargetPart()
                 for _, part in ipairs(workspace:GetDescendants()) do
                     if part:IsA("BasePart") and (part.CFrame.Position - targetCFrame.Position).Magnitude < 0.1 then
@@ -78,274 +53,137 @@ LP:addToggle("Auto | SugarFarm", function(value)
                 return nil
             end
 
-            -- Trigger ProximityPrompt if part found
-            task.spawn(function()
-                local targetPart = findTargetPart()
-
-                if targetPart then
-                    for _, child in ipairs(targetPart:GetChildren()) do
-                        if child:IsA("ProximityPrompt") then
-                            fireproximityprompt(child) -- Trigger the ProximityPrompt
-                        end
+            local targetPart = findTargetPart()
+            if targetPart then
+                for _, child in ipairs(targetPart:GetChildren()) do
+                    if child:IsA("ProximityPrompt") then
+                        fireproximityprompt(child)
                     end
                 end
-            end)
+            end
 
-            -- Run the purchase actions
-            task.spawn(function()
-                local args1 = { [1] = "Purchase", [2] = "SugarCane" }
-                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args1))
-                wait(0.1)
-                local args2 = { [1] = "Purchase", [2] = "BakingPowder" }
-                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args2))
-            end)
+            local UI = game:GetService("ReplicatedStorage").UI.SugarNPC
+            UI:FireServer("Purchase", "SugarCane")
+            wait(0.1)
+            UI:FireServer("Purchase", "BakingPowder")
 
-            -- Unequip and equip actions
-            task.spawn(function()
-                local player = game.Players.LocalPlayer
-                local backpack = player.Backpack
-                local bakingPowder = backpack:WaitForChild("BakingPowder")
-                local sugarCane = backpack:WaitForChild("SugarCane")
+            local player = game.Players.LocalPlayer
+            local backpack = player.Backpack
 
-                if player.Character:FindFirstChild("BakingPowder") then
-                    player.Character:FindFirstChild("BakingPowder").Parent = backpack
+            for _, item in ipairs({"BakingPowder", "SugarCane"}) do
+                if backpack:FindFirstChild(item) then
+                    backpack[item].Parent = player.Character
                 end
-                if player.Character:FindFirstChild("SugarCane") then
-                    player.Character:FindFirstChild("SugarCane").Parent = backpack
-                end
+            end
 
-                wait(0.1)
-                bakingPowder.Parent = player.Character
-                wait(0.1)
-                sugarCane.Parent = player.Character
-                wait(0.1)
-            end)
+            wait(0.1)
+            UI:FireServer("Sell")
 
-            -- Sell action
-            task.spawn(function()
-                local args3 = { [1] = "Sell" }
-                game:GetService("ReplicatedStorage"):WaitForChild("UI"):WaitForChild("SugarNPC"):FireServer(unpack(args3))
-            end)
-
-            -- Wait before repeating
-            task.wait(1.5)
+            if not sugarFarmRunning then break end
+            wait(1.5)
         end
     end)
 end)
 
--- Combat Features Page
-local combatPage = UI:addPage("🎯combat", 2, false, 6)
+-- **Combat Page**
+local combatPage = UI:addPage("🎯 Combat", 2, false, 6)
+combatPage:addLabel("🎯 Combat Features", "PvP & Combat Tools")
 
-combatPage:addLabel("🎯combat", "all the features of combat")
-
-combatPage:addButton("aimbot | mobile support", function()
+combatPage:addButton("🎯 Aimbot (Mobile Support)", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/m9Q1s7sg"))()
 end)
 
-combatPage:addButton("head expander | mobile and pc", function()
+combatPage:addButton("🧠 Head Expander", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/T03iK6Ay"))()
 end)
 
-combatPage:addButton("highlight esp | pvp checker", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/QcEsWdLY", true))()
+combatPage:addButton("👀 Highlight ESP (PvP Checker)", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/QcEsWdLY"))()
 end)
 
-combatPage:addButton("track lines | pvp checker", function()
+combatPage:addButton("📍 Track Lines (PvP Checker)", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/CHpQhRcv"))()
 end)
 
--- Stats Page
+-- **Animations Page**
+local Animations = UI:addPage("🏃 Animations", 2, false, 6)
+Animations:addLabel("🏃 Animations", "All Animation Features")
 
--- Animations Page
-local animationPage = UI:addPage("🏃animations", 2, false, 6)
+local animationTracks = {}
 
-animationPage:addLabel("🏃animations", "all the features of animations")
-
--- Crouch Animation Toggle
-local crouchAnimationTrack = nil  -- Variable to hold the crouch animation track
-local crouchIsRunning = false  -- Track whether the crouch animation is playing
-
-animationPage:addToggle("crouch | OP", function(value)
+local function toggleAnimation(state, animationName)
     local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
+    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
     if not humanoid then return end
 
-    local function findAndPlayCrouchAnimation()
-        for _, obj in ipairs(workspace:GetDescendants()) do
-            if obj:IsA("Animation") and obj.Name:lower():find("crouch") then
-                local animator = humanoid:FindFirstChildOfClass("Animator")
-                if not animator then
-                    animator = Instance.new("Animator", humanoid)
-                end
+    local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
 
-                local track = animator:LoadAnimation(obj)
+    if state then
+        for _, anim in ipairs(workspace:GetDescendants()) do
+            if anim:IsA("Animation") and anim.Name:lower():find(animationName) then
+                local track = animator:LoadAnimation(anim)
                 track:Play()
-                return track
+                animationTracks[animationName] = track
+                return
             end
         end
-        return nil
-    end
-
-    if value then
-        crouchAnimationTrack = findAndPlayCrouchAnimation()
     else
-        if crouchAnimationTrack then
-            crouchAnimationTrack:Stop()
-            crouchAnimationTrack:Destroy()
-            crouchAnimationTrack = nil
+        if animationTracks[animationName] then
+            animationTracks[animationName]:Stop()
+            animationTracks[animationName]:Destroy()
+            animationTracks[animationName] = nil
         end
     end
+end
+
+Animations:addToggle("🐍 Snake Crawl", function(state) toggleAnimation(state, "snake crawl") end)
+Animations:addToggle("🔒 Handcuff Animation", function(state) toggleAnimation(state, "cuffed") end)
+Animations:addToggle("🛑 Crouch Animation", function(state) toggleAnimation(state, "crouch") end)
+
+-- **Character Page**
+local Character = UI:addPage("🧍 Character", 2, false, 6)
+Character:addLabel("🧍 Character Features", "All Character Mods")
+
+Character:addButton("🍬 Auto Skittles", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/eB7W81Ey"))()
 end)
 
--- HandCuff Animation Toggle
-local handcuffAnimationTrack = nil  -- Variable to hold the handcuff animation track
-local handcuffIsRunning = false  -- Track whether the handcuff animation is playing
-
-animationPage:addToggle("handcuff | OP", function(value)
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-    if not humanoid then return end
-
-    local function playHandcuffAnimation()
-        local anim = game:GetService("ReplicatedStorage"):FindFirstChild("CuffedAnim")
-        if anim and anim:IsA("Animation") then
-            local animator = humanoid:FindFirstChildOfClass("Animator")
-            if not animator then
-                animator = Instance.new("Animator", humanoid)
-            end
-
-            handcuffAnimationTrack = animator:LoadAnimation(anim)
-            handcuffAnimationTrack:Play()
-            return handcuffAnimationTrack
-        else
-            return nil
-        end
-    end
-
-    if value then
-        handcuffAnimationTrack = playHandcuffAnimation()
-    else
-        if handcuffAnimationTrack then
-            handcuffAnimationTrack:Stop()
-            handcuffAnimationTrack:Destroy()
-            handcuffAnimationTrack = nil
-        end
-    end
+Character:addButton("⚡ Infinite Stamina", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP"))()
 end)
 
--- Snake Crawl Animation Toggle
-local snakeCrawlAnimationTrack = nil  -- Variable to hold the snake crawl animation track
-local snakeCrawlIsRunning = false  -- Track whether the snake crawl animation is playing
-
-animationPage:addToggle("snake crawl | OP", function(value)
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-    if not humanoid then return end
-
-    local function findAndPlaySnakeCrawlAnimation()
-        for _, obj in ipairs(workspace:GetDescendants()) do
-            if obj:IsA("Animation") and obj.Name:lower():find("snake crawl") then
-                local animator = humanoid:FindFirstChildOfClass("Animator")
-                if not animator then
-                    animator = Instance.new("Animator", humanoid)
-                end
-
-                local track = animator:LoadAnimation(obj)
-                track:Play()
-                return track
-            end
-        end
-        return nil
-    end
-
-    if value then
-        snakeCrawlAnimationTrack = findAndPlaySnakeCrawlAnimation()
-    else
-        if snakeCrawlAnimationTrack then
-            snakeCrawlAnimationTrack:Stop()
-            snakeCrawlAnimationTrack:Destroy()
-            snakeCrawlAnimationTrack = nil
-        end
-    end
-end)
-
-
-
-local characterpage = UI:addPage("🧍character", 2, false, 6)
-
-characterpage:addLabel("🧍character", "all the features of character")
-
-
-characterpage:addButton("auto | skittles", function()
-    
-loadstring(game:HttpGet("https://pastebin.com/raw/eB7W81Ey"))()
-
-end)
-
-
-
-characterpage:addButton("inf | stamina", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/Z5JQtqeP", true))()
-end)
-
-characterpage:addButton("inf | hunger", function()
+Character:addButton("🍔 Infinite Hunger", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/aeZxPh0x"))()
 end)
 
-characterpage:addButton("inf | karma", function()
-    loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB", true))()
+Character:addButton("☯️ Infinite Karma", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/5NPtManB"))()
 end)
 
+Character:addLabel("👕 Customization", "Clothing & Accessories")
 
-characterpage:addLabel("customization | clothes", "customization / accessories")
-
-
-
-characterpage:addButton("CrossChain",function()
-    
-
-loadstring(game:HttpGet("https://pastebin.com/raw/EuTmKu63"))()
-
-
+Character:addButton("🔗 CrossChain", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/EuTmKu63"))()
 end)
 
-
-characterpage:addButton("HunnidChain",function()
-
-
-loadstring(game:HttpGet("https://pastebin.com/raw/PQCY6Wd1"))()
-
+Character:addButton("💎 HunnidChain", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/PQCY6Wd1"))()
 end)
 
-characterpage:addLabel("shoes | addons", "buy the available shoes listed ")
+Character:addLabel("👟 Shoes & Add-ons", "Buy Available Shoes")
 
-
-
-characterpage:addButton("Xmas shoe [200$]",function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/nZip8SyM", true))()
-
+Character:addButton("🎄 Xmas Shoes [$200]", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/nZip8SyM"))()
 end)
 
-characterpage:addButton("GoldXmas shoe [200$]",function()
-
-loadstring(game:HttpGet("https://pastebin.com/raw/Hu4e1mkB", true))()
-
+Character:addButton("🥇 Gold Xmas Shoes [$200]", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/Hu4e1mkB"))()
 end)
 
-characterpage:addButton("Redmas shoe [200$]",function()
-  
-loadstring(game:HttpGet("https://pastebin.com/raw/AaaQCUij", true))()
-
+Character:addButton("🔴 Redmas Shoes [$200]", function()
+    loadstring(game:HttpGet("https://pastebin.com/raw/AaaQCUij"))()
 end)
 
-local carpage = UI:addPage("🚗cars (coming soon)", 2, false, 6)
-
-carpage:addLabel("🚗cars", "all the features of cars")
-
+-- **Cars Page (Coming Soon)**
+local Cars = UI:addPage("🚗 Cars (Coming Soon)", 2, false, 6)
+Cars:addLabel("🚗 Cars Features", "Car Mods Coming Soon!")
