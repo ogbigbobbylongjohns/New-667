@@ -3,7 +3,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries
 local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/aaaa"))()
 
 -- Create Main UI Window
-local UI = GUI:CreateWindow("🗝️ Unveiled | Best SL2 Script | Made by cor_s | [V2.1]", "Yes, it's true!")
+local UI = GUI:CreateWindow("🗝️ Unveiled | Best SL2 Script | Made by cor_s | [V2.4]", "Yes, it's true!")
 
 -- **Main Page**
 local Home = UI:addPage("⚙️ Main", 1, true, 6)
