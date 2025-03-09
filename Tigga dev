@@ -33,11 +33,72 @@ Home:addButton("🎁 Auto Gifts", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
--- **Auto Farm Page**
+
 local LP = UI:addPage("💵 Auto Farm", 2, false, 6)
 LP:addLabel("💵 Auto Farming", "All Farming Features")
 
 local sugarFarmRunning = false
+local antiAFKEnabled = false
+local showPotToggle = false
+local billboard = nil
+
+-- Anti-AFK function (simulates small inputs without moving the character)
+local function antiAFK()
+    while antiAFKEnabled do
+        -- Simulate a small mouse movement or input
+        local VirtualInputManager = game:GetService("VirtualInputManager")
+        VirtualInputManager:SendMouseMoveEvent(1, 1) -- Moves mouse slightly
+        wait(30) -- Adjust the wait time as needed
+    end
+end
+
+-- Function to create or destroy the ESP text
+local function updateESPText(visible)
+    if visible then
+        -- Find the target part with the proximity prompt
+        local targetCFrame = CFrame.new(185.41, -401.02, 664.97) -- Replace with your desired CFrame
+        local targetPart = nil
+
+        for _, part in ipairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and (part.CFrame.Position - targetCFrame.Position).Magnitude < 0.1 then
+                targetPart = part
+                break
+            end
+        end
+
+        if targetPart and not billboard then
+            -- Create the BillboardGui and TextLabel
+            billboard = Instance.new("BillboardGui")
+            billboard.Adornee = targetPart
+            billboard.Size = UDim2.new(0, 200, 0, 50)
+            billboard.StudsOffset = Vector3.new(0, 5, 0) -- Adjust the height of the text
+            billboard.AlwaysOnTop = true
+            billboard.Enabled = true
+            billboard.Parent = targetPart
+
+            local espText = Instance.new("TextLabel")
+            espText.Text = "STAND HERE TO AUTOFARM"
+            espText.Size = UDim2.new(1, 0, 1, 0)
+            espText.BackgroundTransparency = 1
+            espText.TextColor3 = Color3.new(1, 1, 1)
+            espText.TextSize = 20
+            espText.Parent = billboard
+        end
+    else
+        if billboard then
+            billboard:Destroy()
+            billboard = nil
+        end
+    end
+end
+
+-- Show Pot Toggle
+LP:addToggle("👾 Show autofarm spot", function(value)
+    showPotToggle = value
+    updateESPText(value)
+end)
+
+-- Auto Sugar Farm Toggle
 LP:addToggle("🌿 Auto Sugar Farm", function(value)
     sugarFarmRunning = value
     spawn(function()
@@ -62,28 +123,39 @@ LP:addToggle("🌿 Auto Sugar Farm", function(value)
                 end
             end
 
-            local UI = game:GetService("ReplicatedStorage").UI.SugarNPC
-            UI:FireServer("Purchase", "SugarCane")
-            wait(0.1)
-            UI:FireServer("Purchase", "BakingPowder")
+            if sugarFarmRunning then
+                local UI = game:GetService("ReplicatedStorage").UI.SugarNPC
+                UI:FireServer("Purchase", "SugarCane")
+                wait(0.05) -- Reduced wait time
+                UI:FireServer("Purchase", "BakingPowder")
 
-            local player = game.Players.LocalPlayer
-            local backpack = player.Backpack
+                local player = game.Players.LocalPlayer
+                local backpack = player.Backpack
 
-            for _, item in ipairs({"BakingPowder", "SugarCane"}) do
-                if backpack:FindFirstChild(item) then
-                    backpack[item].Parent = player.Character
+                for _, item in ipairs({"BakingPowder", "SugarCane"}) do
+                    if backpack:FindFirstChild(item) then
+                        backpack[item].Parent = player.Character
+                    end
                 end
+
+                wait(0.05) -- Reduced wait time
+                UI:FireServer("Sell")
             end
 
-            wait(0.1)
-            UI:FireServer("Sell")
-
             if not sugarFarmRunning then break end
-            wait(1.5)
+            wait(0.5) -- Reduced wait time between loops
         end
     end)
 end)
+
+-- Anti-AFK Toggle
+LP:addToggle("🛑 Anti-AFK", function(value)
+    antiAFKEnabled = value
+    if antiAFKEnabled then
+        spawn(antiAFK)
+    end
+end)
+
 
 -- **Combat Page**
 local combatPage = UI:addPage("🎯 Combat", 2, false, 6)
