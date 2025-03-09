@@ -9,6 +9,8 @@ local UI = GUI:CreateWindow("🗝️ Unveiled | Best SL2 Script | Made by cor_s 
 local Home = UI:addPage("⚙️ Main", 1, true, 6)
 Home:addLabel("⚙️ Main Functions", "Essential Features")
 
+
+
 Home:addButton("🏠 Apartment Bypass", function()
     local player = game.Players.LocalPlayer
     local function clearInsideApartments()
@@ -33,6 +35,39 @@ Home:addButton("🎁 Auto Gifts", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/5wQNYkTB"))()
 end)
 
+Home:addButton("💳 Auto BlankCard",function()
+ 
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+local backpack = localPlayer.Backpack
+
+local args = {
+    [1] = "Card"
+}
+
+local function equipBlankCardAndFireEvent()
+    for _, item in ipairs(backpack:GetChildren()) do
+        if item.Name == "BlankCard" then
+            -- Equip the BlankCard
+            localPlayer.Character.Humanoid:EquipTool(item)
+            
+            -- Fire the remote event
+            ReplicatedStorage:WaitForChild("UI"):WaitForChild("ATM"):FireServer(unpack(args))
+            
+            -- Wait a bit before looping
+            wait(1)
+            break
+        end
+    end
+end
+
+while true do
+    equipBlankCardAndFireEvent()
+    wait(1) -- Adjust the wait time as needed
+end
+
+end)
 
 local LP = UI:addPage("💵 Auto Farm", 2, false, 6)
 LP:addLabel("💵 Auto Farming", "All Farming Features")
