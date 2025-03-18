@@ -1,3 +1,6 @@
+print("💎made by cor_s |DISCORD|💎")
+print("💎do not steal :) |DISCORD|💎")
+
 -- Load External Scripts
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Pixeluted/adoniscries/main/Source.lua", true))()
 local GUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/aaaa"))()
@@ -7,7 +10,7 @@ local UI = GUI:CreateWindow("🗝️ Unveiled | Best SL2 Script | Made by cor_s 
 
 -- **Main Page**
 local Home = UI:addPage("⚙️ Main", 1, true, 6)
-Home:addLabel("⚙️ Main Functions", "Essential Features")
+Home:addLabel("⚙️ Core Functions", "Essential Features")
 
 
 
@@ -196,6 +199,36 @@ end)
 local combatPage = UI:addPage("🎯 Combat", 2, false, 6)
 combatPage:addLabel("🎯 Combat Features", "PvP & Combat Tools")
 
+combatPage:addButton("🔫 Anti Recoil", function()
+    
+local Bag = game.Players.LocalPlayer.Backpack:GetChildren() 
+
+for _, tools in ipairs(Bag) do if 
+tools:IsA("Tool") then 
+print("tool_found" .. tools.Name) 
+
+local te = tools:GetChildren() 
+
+for _, des in ipairs(te) do if des:IsA("Folder") and des.Name == "Stats" then print("script_found" .. des.Name) 
+
+local none = des:GetChildren()
+
+for _, rec in ipairs(none) do if 
+rec:IsA("NumberValue") and rec.Name == "Recoil"
+then rec.Value = 0
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+
+
+
+end)
+
 combatPage:addButton("🎯 Aimbot (Mobile Support)", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/m9Q1s7sg"))()
 end)
@@ -203,6 +236,8 @@ end)
 combatPage:addButton("🧠 Head Expander", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/T03iK6Ay"))()
 end)
+
+combatPage:addLabel("🤖 Esp and tracking", "All esp and tracking fucntions")
 
 combatPage:addButton("👀 Highlight ESP (PvP Checker)", function()
     loadstring(game:HttpGet("https://pastebin.com/raw/QcEsWdLY"))()
@@ -292,5 +327,211 @@ Character:addButton("🔴 Redmas Shoes [$200]", function()
 end)
 
 -- **Cars Page (Coming Soon)**
-local Cars = UI:addPage("🚗 Cars (Coming Soon)", 2, false, 6)
-Cars:addLabel("🚗 Cars Features", "Car Mods Coming Soon!")
+local Cars = UI:addPage("🚗 Cars (NEW)", 2, false, 6)
+Cars:addLabel("🚗 Cars Features", "❗️CAR MUST BE SPAWNED❗️")
+
+Cars:addButton("🏎️ Turbo Activator", function()
+
+print("💎made by cor_s |discord user|💎")
+
+local plr = game.Players.LocalPlayer.Name
+local carname = (plr .. "'s Car") 
+local work = game.Workspace:GetChildren() 
+
+for _, car in ipairs(work) 
+do if 
+car:IsA("Model") and car.Name == carname 
+then print(" successfully found: " .. carname) 
+
+local tur = car:GetChildren()
+
+for _, turbo in ipairs(tur) do if turbo:IsA("BoolValue") and turbo.Name == "TurboNStep" then turbo.Value = true
+            end 
+        end 
+    end 
+end
+
+end)
+
+
+Cars:addLabel("📜 Car Editing", "❗️CAR MUST BE SPAWNED❗️")
+
+-- Function for adding a text box to change Horsepower
+Cars:addTextBox("Enter Horsepower (default is 200)", "Number here", function(value)
+    -- Convert the input to a number
+    local horsepower = tonumber(value)
+    
+    -- Ensure the value is a valid number
+    if horsepower then
+        -- Variables for car modding
+        local plr = game.Players.LocalPlayer
+        local carname = plr.Name .. "'s Car"
+        local g = game.Workspace:GetChildren()
+
+        print("💎made by cor_s |discord user|💎")
+
+        local carFound = false  -- Flag to track if the car was found
+
+        -- Loop through all objects in the workspace
+        for _, car in ipairs(g) do
+            if car:IsA("Model") and car.Name == carname then
+                print("car found✅")
+
+                -- Find the "A-Chassis Tune" object
+                local chi = car:FindFirstChild("A-Chassis Tune")
+                if chi then
+                    print("check 2 completed✅ -" .. carname)
+                    print("modding car✅")
+                    
+                    -- Modify the car's horsepower with the value entered in the text box
+                    local var1 = require(chi)
+                    var1.Horsepower = horsepower
+                end
+                
+                carFound = true  -- Mark that the car was found
+                break  -- Exit the loop once the car is found and modded
+            end
+        end
+
+        -- If no car was found, print a message
+        if not carFound then
+            print("car not found❌")
+            print("please spawn your car🚗")
+        end
+    else
+        print("Invalid horsepower value❌ Please enter a valid number.")
+    end
+end)
+
+Cars:addTextBox("Adjust Camber (Front & Rear)", "Number here", function(value)
+    local plr = game.Players.LocalPlayer
+    local carname = plr.Name .. "'s Car"
+    local g = game.Workspace:GetChildren()
+
+    print("💎made by cor_s |discord user|💎")
+
+    local carFound = false
+
+    for _, car in ipairs(g) do
+        if car:IsA("Model") and car.Name == carname then
+            print("car found✅")
+
+            local chi = car:FindFirstChild("A-Chassis Tune")
+            if chi then
+                print("modding car✅")
+                local var1 = require(chi)
+                -- Apply the same camber value for both front and rear
+                var1.FCamber = value
+                var1.RCamber = value
+            end
+
+            carFound = true
+            break
+        end
+    end
+
+    if not carFound then
+        print("car not found❌")
+        print("please spawn your car🚗")
+    end
+end)
+
+Cars:addTextBox("Adjust Weight (All Values)", "Number here", function(value)
+    local plr = game.Players.LocalPlayer
+    local carname = plr.Name .. "'s Car"
+    local g = game.Workspace:GetChildren()
+
+    print("💎made by cor_s |discord user|💎")
+
+    local carFound = false
+
+    for _, car in ipairs(g) do
+        if car:IsA("Model") and car.Name == carname then
+            print("car found✅")
+
+            local chi = car:FindFirstChild("A-Chassis Tune")
+            if chi then
+                print("modding car✅")
+                local var1 = require(chi)
+                -- Apply weight adjustment
+                var1.Weight = value
+                var1.WeightDist = value
+            end
+
+            carFound = true
+            break
+        end
+    end
+
+    if not carFound then
+        print("car not found❌")
+        print("please spawn your car🚗")
+    end
+end)
+
+Cars:addTextBox("Adjust Brakes (Front & Rear)", "Number here", function(value)
+    local plr = game.Players.LocalPlayer
+    local carname = plr.Name .. "'s Car"
+    local g = game.Workspace:GetChildren()
+
+    print("💎made by cor_s |discord user|💎")
+
+    local carFound = false
+
+    for _, car in ipairs(g) do
+        if car:IsA("Model") and car.Name == carname then
+            print("car found✅")
+
+            local chi = car:FindFirstChild("A-Chassis Tune")
+            if chi then
+                print("modding car✅")
+                local var1 = require(chi)
+                -- Apply brake force adjustments
+                var1.FBrakeForce = value
+                var1.RBrakeForce = value
+            end
+
+            carFound = true
+            break
+        end
+    end
+
+    if not carFound then
+        print("car not found❌")
+        print("please spawn your car🚗")
+    end
+end)
+
+Cars:addTextBox("Adjust Turbo Boost", "Number here", function(value)
+    local plr = game.Players.LocalPlayer
+    local carname = plr.Name .. "'s Car"
+    local g = game.Workspace:GetChildren()
+
+    print("💎made by cor_s |discord user|💎")
+
+    local carFound = false
+
+    for _, car in ipairs(g) do
+        if car:IsA("Model") and car.Name == carname then
+            print("car found✅")
+
+            local chi = car:FindFirstChild("A-Chassis Tune")
+            if chi then
+                print("modding car✅")
+                local var1 = require(chi)
+                -- Apply turbo boost adjustment
+                var1.Boost = value
+            end
+
+            carFound = true
+            break
+        end
+    end
+
+    if not carFound then
+        print("car not found❌")
+        print("please spawn your car🚗")
+    end
+end)
+
+
